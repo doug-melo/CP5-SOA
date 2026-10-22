@@ -35,15 +35,27 @@ extension=curl
 extension=zip
 ```
 
-Por exemplo, `;extension=zip` deve ficar `extension=zip`. OpenSSL, mbstring e fileinfo são exigidas pelas dependências deste projeto; cURL e ZIP facilitam os downloads e a extração, evitando depender de alternativas externas.
+Por exemplo, `;extension=fileinfo` deve ficar `extension=fileinfo`. OpenSSL, mbstring e fileinfo são exigidas pelas dependências deste projeto; cURL e ZIP facilitam os downloads e a extração, evitando depender de alternativas externas.
 
-Confirme também que `extension_dir` aponta para a pasta `ext` da **sua** instalação. Exemplo para um PHP instalado em `C:\php` (ajuste o caminho):
+Se o Composer informar **`requires ext-fileinfo ... it is missing from your system`**, abra o `php.ini` indicado no próprio erro e altere:
 
 ```ini
-extension_dir = "C:\php\ext"
+;extension=fileinfo
 ```
 
-As DLLs correspondentes, como `php_zip.dll`, devem existir nessa pasta e ser compatíveis com a versão e a arquitetura do PHP utilizado.
+para:
+
+```ini
+extension=fileinfo
+```
+
+Salve e confirme a ativação:
+
+```bash
+php --ri fileinfo
+```
+
+Quando o comando mostrar as informações da extensão, execute novamente `composer install`. Esse erro é resolvido habilitando **`extension=fileinfo`**; não é necessário executar `composer update` nem ignorar o requisito.
 
 Além dessas extensões, o `composer.lock` exige **ctype, filter, hash, session, tokenizer, iconv, DOM, libxml, PCRE, Phar, XMLWriter e JSON**, incluindo as dependências de testes. Nas distribuições oficiais do PHP para Windows, esses módulos normalmente já vêm integrados ou habilitados. Confira-os com `php -m`; não adicione linhas como `extension=dom` sem que sua distribuição forneça esse módulo como extensão carregável.
 
