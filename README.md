@@ -6,9 +6,7 @@ API REST em **PHP 8.2+ e Laravel 12**, com armazenamento de pedidos exclusivamen
 
 | Nome | RM |
 | --- | --- |
-| Douglas dos Santos Melo | PREENCHER |
-
-Preencha o RM e acrescente os demais integrantes antes da entrega.
+| Douglas dos Santos Melo | 556439 |
 
 ## Executar
 
@@ -169,4 +167,4 @@ Mais registros em [docs/logs-evidence.jsonl](docs/logs-evidence.jsonl).
 
 ## Entrega
 
-Repositório público: https://github.com/doug-melo/CP5-SOA. Não envie `.env` ou `vendor/`. O `composer.lock` está incluído para reproduzir as dependências validadas. Preencha os participantes e RMs e entregue o link do repositório na tarefa da disciplina.
+Repositório público: https://github.com/doug-melo/CP5-SOA. Não envie `.env` ou `vendor/`. O `composer.lock` está incluído para reproduzir as dependências validadas. Entregue o link do repositório na tarefa da disciplina.
