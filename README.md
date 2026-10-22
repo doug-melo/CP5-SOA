@@ -12,6 +12,54 @@ Aplicação com **frontend Vue 3 + Vite** e API REST em **PHP 8.2+ e Laravel 12*
 
 Pré-requisitos: PHP 8.2 ou superior, Composer 2 e extensões exigidas pelo Composer (incluindo mbstring, DOM/XML e cURL). Para compilar a interface Vue, utilize Node.js 20.19+ ou 22.12+ e npm. Não precisa de banco de dados ou Docker.
 
+### Habilitar as extensões do PHP antes do Composer (Windows)
+
+No terminal em que você vai executar o projeto, confira qual PHP e qual arquivo de configuração estão em uso:
+
+```bash
+php -v
+php --ini
+```
+
+Abra o caminho mostrado em **Loaded Configuration File**. Se aparecer `(none)`, copie o arquivo `php.ini-development` da instalação do PHP para `php.ini` e confirme o carregamento com `php --ini`.
+
+No `php.ini`, procure as linhas abaixo e remova o `;` do início para habilitar as extensões. Não duplique uma linha que já estiver ativa:
+
+```ini
+extension=openssl
+extension=mbstring
+extension=fileinfo
+
+; Recomendadas para downloads e extração dos pacotes pelo Composer:
+extension=curl
+extension=zip
+```
+
+Por exemplo, `;extension=zip` deve ficar `extension=zip`. OpenSSL, mbstring e fileinfo são exigidas pelas dependências deste projeto; cURL e ZIP facilitam os downloads e a extração, evitando depender de alternativas externas.
+
+Confirme também que `extension_dir` aponta para a pasta `ext` da **sua** instalação. Exemplo para um PHP instalado em `C:\php` (ajuste o caminho):
+
+```ini
+extension_dir = "C:\php\ext"
+```
+
+As DLLs correspondentes, como `php_zip.dll`, devem existir nessa pasta e ser compatíveis com a versão e a arquitetura do PHP utilizado.
+
+Além dessas extensões, o `composer.lock` exige **ctype, filter, hash, session, tokenizer, iconv, DOM, libxml, PCRE, Phar, XMLWriter e JSON**, incluindo as dependências de testes. Nas distribuições oficiais do PHP para Windows, esses módulos normalmente já vêm integrados ou habilitados. Confira-os com `php -m`; não adicione linhas como `extension=dom` sem que sua distribuição forneça esse módulo como extensão carregável.
+
+Salve o arquivo e verifique os módulos e os requisitos das dependências:
+
+```bash
+php -m
+composer check-platform-reqs --lock
+```
+
+Se ainda faltar uma extensão, corrija a instalação/configuração indicada antes de continuar. O PHP do terminal pode ser diferente daquele usado pelo Apache/XAMPP; o arquivo relevante é o mostrado por `php --ini`. Novas execuções do PHP CLI leem a configuração salva; se a aplicação já estiver rodando, reinicie `php artisan api:serve`.
+
+Referência: [habilitação de extensões no Windows — manual do PHP](https://www.php.net/manual/en/install.pecl.windows.php).
+
+### Instalar as dependências e iniciar
+
 ```bash
 composer install
 ```
