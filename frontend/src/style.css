@@ -169,7 +169,7 @@ a:focus-visible {
   font-size: 10px;
 }
 main {
-  max-width: 1350px;
+  max-width: 1140px;
   margin: 0 auto;
   padding: 49px 40px 22px;
 }
@@ -245,9 +245,9 @@ h1 {
 }
 .panels {
   display: grid;
-  grid-template-columns: 1.05fr 1fr;
+  grid-template-columns: minmax(0, 1fr);
   align-items: start;
-  gap: 24px;
+  gap: 18px;
 }
 .panel {
   background: #fff;
@@ -260,7 +260,7 @@ h1 {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 27px;
+  margin-bottom: 22px;
 }
 .section-icon {
   height: 37px;
@@ -271,7 +271,8 @@ h1 {
   display: grid;
   place-items: center;
   color: #7861bf;
-  font-size: 23px;
+  font-size: 15px;
+  font-weight: 700;
 }
 h2 {
   font-size: 17px;

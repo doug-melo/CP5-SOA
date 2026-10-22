@@ -158,7 +158,7 @@ async function copyId() {
         <div class="panels">
           <section class="panel" aria-labelledby="create-title">
             <div class="panel-heading">
-              <span class="section-icon" aria-hidden="true">＋</span>
+              <span class="section-icon" aria-hidden="true">01</span>
               <div>
                 <h2 id="create-title">Novo pedido</h2>
                 <p>Preencha as informações para começar.</p>
@@ -259,7 +259,7 @@ async function copyId() {
 
           <section class="panel" aria-labelledby="search-title">
             <div class="panel-heading">
-              <span class="section-icon" aria-hidden="true">⌕</span>
+              <span class="section-icon" aria-hidden="true">02</span>
               <div>
                 <h2 id="search-title">Consultar pedido</h2>
                 <p>Encontre os detalhes de um pedido existente.</p>
