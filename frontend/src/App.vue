@@ -128,7 +128,11 @@ async function copyId() {
         <span
           >Aplicação de pedidos
           <span class="breadcrumb">/ Visão geral</span></span
-        ><span class="stack-tag">Laravel + Vue 3</span>
+        >
+        <div class="topbar-links">
+          <a class="docs-link" href="/docs">Swagger / API ↗</a
+          ><span class="stack-tag">Laravel + Vue 3</span>
+        </div>
       </header>
       <main>
         <div class="page-heading">

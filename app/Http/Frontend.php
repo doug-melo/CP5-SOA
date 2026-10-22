@@ -9,7 +9,8 @@ class Frontend
     public function response(ServerRequestInterface $request): ?Response
     {
         $path = rawurldecode($request->getUri()->getPath());
-        if (! in_array($request->getMethod(), ['GET', 'HEAD']) || ($path !== '/' && ! str_starts_with($path, '/assets/'))) {
+        $documentation = $path === '/docs' || str_starts_with($path, '/docs/');
+        if (! in_array($request->getMethod(), ['GET', 'HEAD']) || ($path !== '/' && ! str_starts_with($path, '/assets/') && ! $documentation)) {
             return null;
         }
 
@@ -18,7 +19,12 @@ class Frontend
             return new Response(503, ['Content-Type' => 'text/plain; charset=utf-8'], 'Compile o frontend com: npm ci --prefix frontend && npm run build --prefix frontend');
         }
 
-        $file = realpath($root.($path === '/' ? '/index.html' : $path));
+        $relativePath = match ($path) {
+            '/' => '/index.html',
+            '/docs', '/docs/' => '/docs/index.html',
+            default => $path,
+        };
+        $file = realpath($root.$relativePath);
         if ($file === false || ! str_starts_with($file, $root.DIRECTORY_SEPARATOR) || ! is_file($file)) {
             return new Response(404, ['Content-Type' => 'text/plain; charset=utf-8'], 'Arquivo não encontrado.');
         }
@@ -27,6 +33,7 @@ class Frontend
             'html' => 'text/html; charset=utf-8',
             'js' => 'text/javascript; charset=utf-8',
             'css' => 'text/css; charset=utf-8',
+            'json' => 'application/json; charset=utf-8',
             'svg' => 'image/svg+xml',
             'png' => 'image/png',
             default => 'application/octet-stream',

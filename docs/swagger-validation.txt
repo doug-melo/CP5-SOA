@@ -1,0 +1,13 @@
+Swagger UI - verificação de integração
+
+- Build do frontend e cópia local dos assets Swagger: aprovado.
+- /docs e /docs/: HTTP 200 com HTML.
+- /docs/openapi.json: HTTP 200, application/json, duas operações documentadas.
+- JavaScript e CSS servidos localmente com MIME correto.
+- Swagger UI montado em DOM simulado (jsdom), exibindo POST e GET.
+- Servidor configurado com a origem/porta atual (porta alternativa 8121).
+- Try it out e Execute acionados no POST: criação real com HTTP 201,
+  identificador UUID e status CRIADO exibidos no resultado.
+- Backend: 6 testes PHPUnit e 28 assertions aprovados.
+
+Validação por build, HTTP e DOM simulado; sem inspeção visual em navegador real.

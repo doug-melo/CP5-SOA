@@ -171,7 +171,19 @@ HTTP 200 retorna o mesmo objeto. Um identificador inexistente retorna HTTP 404:
 
 ## OpenAPI
 
-A especificação completa está em [docs/openapi.json](docs/openapi.json). Importe o arquivo no Swagger Editor ou no Postman para visualizar as duas operações, esquemas e erros. A atividade não exige Swagger UI em execução.
+Após executar os comandos de instalação e build acima, inicie `php artisan api:serve` e abra:
+
+**Swagger UI: http://127.0.0.1:8000/docs**
+
+A interface de pedidos também possui o link **Swagger / API** no topo. Na documentação:
+
+1. Abra `POST /api/pedidos`, clique em **Try it out**, preencha o JSON e clique em **Execute**.
+2. Copie o `id` retornado com HTTP 201.
+3. Abra `GET /api/pedidos/{id}`, clique em **Try it out**, informe o identificador e execute a consulta.
+
+A especificação completa continua versionada em [docs/openapi.json](docs/openapi.json) e é servida em `/docs/openapi.json`. As duas operações incluem esquemas de entrada/saída e os principais erros. O Swagger utiliza o endereço e a porta atuais para testar a API, inclusive se o servidor for iniciado em outra porta.
+
+Os arquivos do Swagger UI são instalados pelo npm e copiados durante `npm run build --prefix frontend`, sem depender de CDN em execução. Ao atualizar a especificação, execute o build novamente. O endpoint `/docs` é uma interface de documentação adicional às duas operações de negócio. A validação de carregamento e execução está registrada em [docs/swagger-validation.txt](docs/swagger-validation.txt).
 
 ## Testes automatizados
 
