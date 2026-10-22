@@ -1,0 +1,19 @@
+Validação da interface Vue 3
+
+1. Instalação limpa: npm ci --prefix frontend - aprovado.
+2. Compilação: npm run build --prefix frontend - aprovado.
+3. Bundle Vue montado em DOM simulado (jsdom), com API HTTP real:
+   - criação de pedido e mensagem de sucesso;
+   - preenchimento automático do identificador para consulta;
+   - consulta do pedido e formatação monetária;
+   - consulta de identificador inexistente e remoção do resultado anterior.
+   Resultado: aprovado.
+4. Servidor HTTP:
+   - HTML e assets JS/CSS com MIME correto;
+   - HEAD sem corpo;
+   - arquivos privados e travessia de diretórios não expostos;
+   - pedidos preservados entre requisições de API e assets.
+   Resultado: aprovado por revisão independente do agente de testes.
+5. Backend: 6 testes PHPUnit, 28 assertions aprovadas após integrar Vue.
+
+Revisão por código, build, DOM simulado e HTTP. Sem validação visual em navegador real.

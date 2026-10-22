@@ -1,6 +1,6 @@
 # CP5 SOA - API de pedidos
 
-API REST em **PHP 8.2+ e Laravel 12**, com armazenamento de pedidos exclusivamente em memória, documentação OpenAPI, testes PHPUnit e logs estruturados em JSON.
+Aplicação com **frontend Vue 3 + Vite** e API REST em **PHP 8.2+ e Laravel 12**, com armazenamento de pedidos exclusivamente em memória, documentação OpenAPI, testes PHPUnit e logs estruturados em JSON.
 
 ## Integrantes
 
@@ -10,7 +10,7 @@ API REST em **PHP 8.2+ e Laravel 12**, com armazenamento de pedidos exclusivamen
 
 ## Executar
 
-Pré-requisitos: PHP 8.2 ou superior, Composer 2 e extensões exigidas pelo Composer (incluindo mbstring, DOM/XML e cURL). Não precisa de Node, banco de dados ou Docker.
+Pré-requisitos: PHP 8.2 ou superior, Composer 2 e extensões exigidas pelo Composer (incluindo mbstring, DOM/XML e cURL). Para compilar a interface Vue, utilize Node.js 20.19+ ou 22.12+ e npm. Não precisa de banco de dados ou Docker.
 
 ```bash
 composer install
@@ -20,10 +20,18 @@ Copie `.env.example` para `.env` (pelo editor ou explorador de arquivos). Depois
 
 ```bash
 php artisan key:generate
+npm ci --prefix frontend
+npm run build --prefix frontend
 php artisan api:serve
 ```
 
-A API estará em `http://127.0.0.1:8000`. Encerre com Ctrl+C.
+Abra `http://127.0.0.1:8000` para usar a interface Vue. A API está no mesmo endereço, sob `/api/pedidos`. Encerre com Ctrl+C.
+
+O frontend tem formulários de criação e consulta, validações, mensagens de erro e visualização do pedido retornado. Ele usa `fetch` para chamar a API e não armazena pedidos por conta própria.
+
+Para desenvolver a interface com atualização automática, mantenha `php artisan api:serve` rodando e, em outro terminal, execute `npm run dev --prefix frontend`. Abra o endereço mostrado pelo Vite. O proxy envia `/api` para `127.0.0.1:8000`. Depois de editar o frontend, rode o build novamente para atualizar a interface servida pelo PHP.
+
+**Vue é o framework da interface. ReactPHP é somente a biblioteca do servidor PHP e não tem relação com React.js.**
 
 **Use `api:serve` para esta atividade.** Esse comando mantém um processo ativo com ReactPHP e encaminha as requisições ao kernel HTTP do Laravel. O array de pedidos pertence a um repositório singleton e permanece disponível entre chamadas. `php artisan serve` reinicializa o estado PHP a cada requisição e não preserva esse array.
 
@@ -39,7 +47,7 @@ php artisan api:serve --port=8080
 
 ```mermaid
 flowchart TD
-    A[Cliente HTTP] --> B[Servidor ReactPHP]
+    A[Interface Vue 3 ou cliente HTTP] --> B[Servidor PHP com ReactPHP]
     B --> C[Kernel Laravel e rotas]
     C --> D[PedidoController]
     D --> E[PedidoService]
@@ -47,6 +55,8 @@ flowchart TD
     C --> G[RequestLog: logs JSON]
 ```
 
+- **Frontend Vue (`frontend/src`):** renderiza os formulários, envia JSON para a API e mostra os resultados. Vite compila a interface em `frontend/dist`.
+- **Frontend PHP (`app/Http/Frontend.php`):** entrega somente o HTML e os assets compilados no mesmo endereço da API.
 - **Servidor ReactPHP:** recebe HTTP em um processo contínuo e adapta cada chamada para uma nova Request do Laravel.
 - **Kernel e rotas:** executam os middlewares e direcionam cada operação ao controller.
 - **PedidoController:** valida o JSON e os dados de entrada; monta as respostas e os códigos HTTP.
@@ -146,6 +156,10 @@ O registro também está em [docs/tests-evidence.txt](docs/tests-evidence.txt).
 
 O teste adicional por HTTP confirmou criação de dois pedidos, IDs distintos, consulta dos dois entre requisições independentes, erro de validação, consulta inexistente e perda dos pedidos após reiniciar. Saída registrada em [docs/http-evidence.txt](docs/http-evidence.txt).
 
+### Validação do frontend Vue
+
+A instalação limpa e o build foram reproduzidos pelo agente de testes. Os fluxos de criação e consulta também foram executados com o bundle Vue em DOM simulado e a API HTTP real, incluindo sucesso e pedido inexistente. O servidor foi verificado quanto à entrega de HTML/JS/CSS e ao isolamento dos arquivos privados. Registro em [docs/frontend-validation.txt](docs/frontend-validation.txt). Não foi realizada validação visual em navegador real.
+
 ## Logs estruturados
 
 Gerados em `storage/logs/laravel.log`, uma linha JSON por registro. O campo `datetime` representa o timestamp; `level_name`, o nível; `message`, a operação; e `context`, os identificadores e detalhes HTTP. O `requestId` também é devolvido no cabeçalho `X-Request-Id`.
@@ -164,7 +178,8 @@ Mais registros em [docs/logs-evidence.jsonl](docs/logs-evidence.jsonl).
 
 - [Documentação oficial do Laravel 12](https://laravel.com/docs/12.x)
 - [Servidor HTTP ReactPHP](https://reactphp.org/http/)
+- [Vue 3](https://vuejs.org/guide/quick-start.html)
 
 ## Entrega
 
-Repositório público: https://github.com/doug-melo/CP5-SOA. Não envie `.env` ou `vendor/`. O `composer.lock` está incluído para reproduzir as dependências validadas. Entregue o link do repositório na tarefa da disciplina.
+Repositório público: https://github.com/doug-melo/CP5-SOA. Não envie `.env`, `vendor/`, `node_modules/` ou `frontend/dist/`. O `composer.lock` está incluído para reproduzir as dependências validadas. Entregue o link do repositório na tarefa da disciplina.

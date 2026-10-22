@@ -13,3 +13,4 @@ node_modules/
 .env.backup
 .env.production
 auth.json
+/frontend/dist/

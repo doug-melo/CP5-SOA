@@ -1,5 +1,6 @@
 <?php
 namespace App\Console\Commands;
+use App\Http\Frontend;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
@@ -18,6 +19,10 @@ class ServeMemoryApi extends Command
         $kernel = $this->laravel->make(Kernel::class);
         $kernel->bootstrap();
         $server = new HttpServer(function (ServerRequestInterface $incoming) use ($kernel) {
+            $frontend = (new Frontend)->response($incoming);
+            if ($frontend !== null) {
+                return $frontend;
+            }
             $serverParams = ['REMOTE_ADDR' => $incoming->getServerParams()['REMOTE_ADDR'] ?? '127.0.0.1'];
             foreach ($incoming->getHeaders() as $name => $values) {
                 $key = strtoupper(str_replace('-', '_', $name));
